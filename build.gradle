@@ -65,7 +65,6 @@ ext {
 	}
 }
 
-apply from: "${rootDir}/gradle/releaser.gradle"
 
 configurations.all {
   // check for updates every build
@@ -127,12 +126,13 @@ configure(subprojects) { project ->
 
 	repositories {
 		mavenCentral()
-		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+		if (version.contains('-')) {
+			maven { url 'https://repo.spring.io/milestone' }
+		}
 		if (version.endsWith('-SNAPSHOT')) {
-			mavenLocal()
 			maven { url 'https://repo.spring.io/snapshot' }
 		}
-		maven { url 'https://repo.spring.io/milestone' }
+
 	}
 
 	// dependencies that are common across all java projects
